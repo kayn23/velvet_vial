@@ -1,0 +1,13 @@
+VIA_ENABLE = yes
+VIAL_ENABLE = yes
+
+MOUSEKEY_ENABLE     = no
+OLED_ENABLE         = no
+OLED_DRIVER         = SSD1306
+EXTRAKEY_ENABLE     = yes
+COMBO_ENABLE        = no
+TAP_DANCE_ENABLE    = no
+KEY_OVERRIDE_ENABLE = no
+
+QMK_SETTINGS        = no
+VIALRGB_ENABLE      = yes
