@@ -5,8 +5,8 @@ MOUSEKEY_ENABLE     = no
 OLED_ENABLE         = no
 OLED_DRIVER         = SSD1306
 EXTRAKEY_ENABLE     = yes
-COMBO_ENABLE        = no
-TAP_DANCE_ENABLE    = no
+COMBO_ENABLE        = yes
+TAP_DANCE_ENABLE    = yes
 KEY_OVERRIDE_ENABLE = no
 
 QMK_SETTINGS        = no

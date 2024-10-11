@@ -17,7 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include QMK_KEYBOARD_H
-#include "3x5_4.h"
+
+#define KC_LANG LCTL(KC_SPC)
 
 enum layout {
     QWE = 0,
@@ -31,7 +32,8 @@ enum key {
     NEXT_APP,
     DVO_QWE,
     T_BASE_H_NAV,
-    T_MEDIA_H_SYM
+    T_MEDIA_H_SYM,
+    LANG,
 };
 bool is_select_prev_app_active = false;
 bool is_select_next_app_active = false;
@@ -42,28 +44,28 @@ uint16_t timer_media_sym;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [QWE] = LAYOUT_split(\
-    KC_Q,          KC_W,         KC_E,         KC_R,         KC_T,           KC_Y,    KC_U,         KC_I,         KC_O,         KC_P, \
-    LCTL_T(KC_A),  LOPT_T(KC_S), LSFT_T(KC_D), LCMD_T(KC_F), KC_G,           KC_H,     LCMD_T(KC_J), RSFT_T(KC_K), LOPT_T(KC_L), LCTL_T(KC_SCLN), \
-    KC_Z,          KC_X,         KC_C,         KC_V,         KC_B,           KC_N,    KC_M,         KC_COMM,      KC_DOT,       KC_SLSH,\
-                   KC_TAB,       KC_RBRC,      MO(NAV),      KC_ENT,         KC_SPC,  MO(SYM),      KC_LBRC,      KC_QUOT \
+    KC_Q,          KC_W,         KC_E,         KC_R,             KC_T,           KC_Y,    KC_U,             KC_I,         KC_O,         KC_P, \
+    LCTL_T(KC_A),  LOPT_T(KC_S), LSFT_T(KC_D), LCMD_T(KC_F),     KC_G,           KC_H,     LCMD_T(KC_J),    RSFT_T(KC_K), LOPT_T(KC_L), LCTL_T(KC_SCLN), \
+    KC_Z,          KC_X,         KC_C,         KC_V,             KC_B,           KC_N,    KC_M,             KC_COMM,      KC_DOT,       KC_SLSH,\
+                   DVO_QWE,      KC_RBRC,      LT(NAV, KC_ESC),  KC_ENT,         KC_SPC,  LT(SYM, KC_BSPC), KC_LBRC,      KC_QUOT \
     ),
     [DVO] = LAYOUT_split(\
-    KC_QUOTE,     KC_COMM,      KC_DOT,       KC_P,         KC_Y,           KC_F,    KC_G,         KC_C,         KC_R,         KC_L, \
-    LCTL_T(KC_A), LALT_T(KC_O), LSFT_T(KC_E), LCMD_T(KC_U), KC_I,           KC_D,    LCMD_T(KC_H), RSFT_T(KC_T), LOPT_T(KC_N), RCTL_T(KC_S),  \
-    KC_SCLN,      KC_Q,         KC_J,         KC_K,         KC_X,           KC_B,    KC_M,         KC_W,         KC_V,         KC_Z,  \
-                  KC_TAB,       KC_RBRC,      MO(NAV),      KC_ENT,         KC_SPC,  MO(SYM),      KC_LBRC,      KC_QUOT \
+    KC_QUOTE,     KC_COMM,      KC_DOT,       KC_P,             KC_Y,           KC_F,    KC_G,             KC_C,         KC_R,         KC_L, \
+    LCTL_T(KC_A), LALT_T(KC_O), LSFT_T(KC_E), LCMD_T(KC_U),     KC_I,           KC_D,    LCMD_T(KC_H),     RSFT_T(KC_T), LOPT_T(KC_N), RCTL_T(KC_S),  \
+    KC_SCLN,      KC_Q,         KC_J,         KC_K,             KC_X,           KC_B,    KC_M,             KC_W,         KC_V,         KC_Z,  \
+                  DVO_QWE,      KC_TAB,       LT(NAV, KC_ESC),  KC_ENT,         KC_SPC,  LT(SYM, KC_BSPC), KC_SLSH,      KC_MINS \
     ),
     [NAV] = LAYOUT_split(\
     LGUI(KC_LBRC),  LGUI(KC_RBRC), LCTL(KC_TAB),  RCS(KC_TAB),    LGUI(KC_BSPC),        KC_TAB,         KC_MPLY,          KC_MUTE,          KC_VOLD,        KC_VOLU, \
 	LCTL_T(KC_TAB), KC_LOPT,       KC_LSFT,       KC_LCMD,        LOPT(KC_BSPC),        RCMD(KC_LEFT),  KC_LEFT,          KC_DOWN,          KC_UP,          KC_RGHT, \
-	PREV_APP,       NEXT_APP,      LCTL(KC_LEFT), LCTL(KC_RIGHT), KC_F12,               RCMD(KC_RIGHT), LALT(KC_LEFT),    LALT(KC_RIGHT),   LSA(KC_LEFT),   LSA(KC_RIGHT), \
-                    KC_TAB,        KC_RBRC,       KC_NO,          KC_ENT,               KC_SPC,         DVO_QWE,          KC_LBRC,          KC_QUOT \
+	SGUI(KC_6),       SGUI(KC_Q),    LCTL(KC_LEFT), LCTL(KC_RIGHT), KC_F12,               RCMD(KC_RIGHT), LALT(KC_LEFT),    LALT(KC_RIGHT),   LSA(KC_LEFT),   LSA(KC_RIGHT), \
+                    KC_TAB,        KC_RBRC,       KC_NO,          KC_ENT,               KC_SPC,         KC_NO,          KC_LBRC,          KC_QUOT \
     ),
     [SYM] = LAYOUT_split(\
     KC_EXLM,        KC_AT,         KC_HASH,       KC_DLR,         KC_PERC,              KC_CIRC,       KC_AMPR,       KC_ASTR,       KC_LPRN,        KC_RPRN, \
     LCTL_T(KC_P1),  LOPT_T(KC_P2), LSFT_T(KC_P3), LCMD_T(KC_P4),  KC_P5,                KC_P6,         RCMD_T(KC_P7), RSFT_T(KC_P8), ROPT_T(KC_P9),  RCTL_T(KC_P0), \
     KC_LCBR,        KC_RCBR,       KC_MINS,       KC_EQL,         KC_GRV,               KC_TILD,       KC_GT,         KC_DQT,        KC_NUBS,        KC_PIPE, \
-                    KC_LBRC,       KC_RBRC,       KC_NO,          KC_ENT,               KC_SPC,        KC_NO,         KC_LBRC,       KC_QUOT \
+                    KC_LBRC,       KC_RBRC,       RGB_TOG,          KC_ENT,               KC_SPC,        KC_NO,         KC_LBRC,       KC_QUOT \
     )
 };
 
@@ -162,7 +164,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return esc_and_enter_handle;
         case DVO_QWE:
             if (record->event.pressed) {
+                register_mods(MOD_MASK_CTRL);
+                tap_code(KC_SPC);
+                unregister_mods(MOD_MASK_CTRL);
                 default_layer_xor((DVO + 1) | (QWE + 1));
+                clear_keyboard();
+            }
+            return false;
+        case LANG:
+            if (record->event.pressed) {
+				register_mods(MOD_MASK_CTRL);
+                tap_code(KC_SPC);
+            } else {
                 clear_keyboard();
             }
             return false;
